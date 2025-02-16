@@ -6,7 +6,11 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "better-auth": "^1.1.18",
+    "drizzle-orm": "^0.39.3",
+    "elysia": "latest",
+    "march1-db": "^1.0.7",
+    "twilio": "^5.4.4"
   },
   "devDependencies": {
     "bun-types": "latest"
