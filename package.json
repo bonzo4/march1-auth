@@ -1,6 +1,6 @@
 {
   "name": "march1-auth",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -20,6 +20,7 @@
     "twilio": "^5.4.4"
   },
   "devDependencies": {
+    "@types/bun": "^1.2.2",
     "bun-types": "latest",
     "rimraf": "^6.0.1"
   },
