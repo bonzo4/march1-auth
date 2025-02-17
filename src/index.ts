@@ -9,4 +9,5 @@ const authApi = new Elysia()
   .use(verifyOTPRoute)
   .listen(process.env.PORT!);
 
-export type AuthApiType = typeof authApi;
+type AuthApi = typeof authApi;
+export type { AuthApi };
