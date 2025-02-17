@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { verifyOTP } from "../utils/verify";
+import { verifyOTP } from "../utils/verifyOTP";
 
 export const verifyOTPRoute = new Elysia().post(
   "/verifyOTP",

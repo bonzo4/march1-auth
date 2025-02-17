@@ -1,4 +1,6 @@
-version: "3.8"
+networks:
+  march1_network:
+    external: true
 
 services:
   app:
@@ -6,8 +8,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${PORT}:3002"
     environment:
       - NODE_ENV=production
-    container_name: march1-auth
+    container_name: march1_auth
     restart: unless-stopped
+    env_file: ".env"
+    networks:
+      - march1_network

@@ -7,7 +7,7 @@
         "better-auth": "^1.1.18",
         "drizzle-orm": "^0.39.3",
         "elysia": "latest",
-        "march1-db": "^1.0.7",
+        "march1-db": "^1.0.8",
         "twilio": "^5.4.4",
       },
       "devDependencies": {
@@ -142,7 +142,7 @@
 
     "lodash.once": ["lodash.once@4.1.1", "", {}, "sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg=="],
 
-    "march1-db": ["march1-db@1.0.7", "", { "dependencies": { "better-auth": "^1.1.18", "dotenv": "^16.4.7", "drizzle-orm": "^0.39.3", "pg": "^8.13.3" }, "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-l9Yxh31Gv17Gmo/fEBSAQHqfjWVVd03suPGuJTtayQ1vTR7LFDBjA+DFycnBTCxlrAiOmGAAr0h0Q2iY6FxcLw=="],
+    "march1-db": ["march1-db@1.0.8", "", { "dependencies": { "better-auth": "^1.1.18", "dotenv": "^16.4.7", "drizzle-orm": "^0.39.3", "pg": "^8.13.3" }, "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-moPy+HkuGgxIp4w1H75joOcAprflHsV31NqYYrE+K/dLIYfGvgc+BNQleaVmYmacVmIHcC26amZxR8n3AF5IuA=="],
 
     "math-intrinsics": ["math-intrinsics@1.1.0", "", {}, "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g=="],
 

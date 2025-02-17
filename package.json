@@ -9,7 +9,7 @@
     "better-auth": "^1.1.18",
     "drizzle-orm": "^0.39.3",
     "elysia": "latest",
-    "march1-db": "^1.0.7",
+    "march1-db": "^1.0.8",
     "twilio": "^5.4.4"
   },
   "devDependencies": {
