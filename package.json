@@ -1,6 +1,6 @@
 {
   "name": "march1-auth",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -15,7 +15,7 @@
   "dependencies": {
     "better-auth": "^1.1.18",
     "drizzle-orm": "^0.39.3",
-    "elysia": "latest",
+    "elysia": "^1.2.12",
     "march1-db": "^1.0.8",
     "twilio": "^5.4.4"
   },
