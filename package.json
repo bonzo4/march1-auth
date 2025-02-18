@@ -1,6 +1,6 @@
 {
   "name": "march1-auth",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "type": "module",
