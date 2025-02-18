@@ -1,12 +1,17 @@
 import { Elysia } from "elysia";
-import { sendOTPRoute } from "./route/sendOTP";
-import { verifyOTPRoute } from "./route/verifyOTP";
-import { healthCheckRoute } from "./route/healthCheck";
+import jwt from "@elysiajs/jwt";
+import { sendOTP, sendOTPBody } from "./utils/otp/sendOTP";
+import { verifyOTP, verifyOTPBody } from "./utils/otp/verifyOTP";
 
 const authApi = new Elysia()
-  .use(healthCheckRoute)
-  .use(sendOTPRoute)
-  .use(verifyOTPRoute)
+  .use(
+    jwt({
+      name: "authJwt",
+      secret: process.env.AUTH_JWT_SECRET!,
+    })
+  )
+  .post("/sendOTP", sendOTP, { body: sendOTPBody })
+  .post("/verifyOTP", verifyOTP, { body: verifyOTPBody })
   .listen(process.env.PORT!);
 
 type AuthApi = typeof authApi;

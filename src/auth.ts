@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 import { phoneNumber } from "better-auth/plugins";
-import { twilioSendOTP } from "./utils/twilio";
+import { twilioSendOTP } from "./utils/otp/twilio";
 import { users, sessions, accounts, verifications } from "march1-db";
 import { getTempEmail } from "./utils/getTempEmail";
 import { getTempName } from "./utils/getTempName";

@@ -1,6 +1,6 @@
 {
   "name": "march1-auth",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -13,6 +13,7 @@
     "publish:build": "rimraf ./dist && bun run build && bun publish"
   },
   "dependencies": {
+    "@elysiajs/jwt": "^1.2.0",
     "better-auth": "^1.1.18",
     "drizzle-orm": "^0.39.3",
     "elysia": "^1.2.12",
@@ -25,7 +26,6 @@
     "rimraf": "^6.0.1"
   },
   "files": [
-    "dist/*.js",
-    "dist/*.d.ts"
+    "dist/index.d.ts"
   ]
 }
