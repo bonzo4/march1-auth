@@ -1,7 +1,7 @@
-import { t } from "elysia";
+import { error, t } from "elysia";
 import { auth } from "../../auth";
-import { twilioVerifyOTP } from "./twilio";
-import type { JwtType } from "../jwt";
+import type { JwtType } from "../types/jwt";
+import type { SetType } from "../types/set";
 
 export const verifyOTPBody = t.Object({
   token: t.String(),
@@ -9,31 +9,40 @@ export const verifyOTPBody = t.Object({
 
 type VerifyOTPOptions = {
   body: typeof verifyOTPBody.static;
-  authJwt: JwtType;
+  set: SetType;
+  jwtAuth: JwtType;
 };
 
 export async function verifyOTP({
-  authJwt,
+  jwtAuth,
+  set,
   body: { token },
 }: VerifyOTPOptions) {
-  const verifiedToken = await authJwt.verify(token);
+  const verifiedToken = await jwtAuth.verify(token);
   if (!verifiedToken) {
-    throw new Error("Restricted");
+    set.status = "Unauthorized";
+    throw error(set.status);
+  }
+  if (!verifiedToken.phoneNumber || !verifiedToken.code) {
+    set.status = "Bad Request";
+    throw error(set.status);
   }
   const { phoneNumber, code } = verifiedToken as {
     phoneNumber: string;
     code: string;
   };
-  const status = await twilioVerifyOTP({ phoneNumber, code });
-  if (status !== "approved") {
-    throw new Error("OTP not approved.");
-  }
-  const isVerified = await auth.api.verifyPhoneNumber({
+
+  const verifiedRes = await auth.api.verifyPhoneNumber({
     body: {
       phoneNumber,
       code,
     },
   });
 
-  return isVerified;
+  if (!verifiedRes || !verifiedRes.status || !verifiedRes.token) {
+    set.status = "Bad Request";
+    throw error(set.status);
+  }
+
+  return verifiedRes;
 }

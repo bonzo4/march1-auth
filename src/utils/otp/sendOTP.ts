@@ -1,6 +1,6 @@
-import { t } from "elysia";
+import { error, t } from "elysia";
 import { auth } from "../../auth";
-import type { JwtType } from "../jwt";
+import type { JwtType } from "../types/jwt";
 
 export const sendOTPBody = t.Object({
   token: t.String(),
@@ -8,13 +8,16 @@ export const sendOTPBody = t.Object({
 
 type sendOTPOptions = {
   body: typeof sendOTPBody.static;
-  authJwt: JwtType;
+  jwtAuth: JwtType;
 };
 
-export async function sendOTP({ authJwt, body: { token } }: sendOTPOptions) {
-  const verifiedToken = await authJwt.verify(token);
+export async function sendOTP({ jwtAuth, body: { token } }: sendOTPOptions) {
+  const verifiedToken = await jwtAuth.verify(token);
   if (!verifiedToken) {
-    throw new Error("Restricted");
+    throw error("Unauthorized");
+  }
+  if (!verifiedToken.phoneNumber || !verifiedToken.code) {
+    throw error("No Content");
   }
   const { phoneNumber } = verifiedToken as { phoneNumber: string };
   const code = await auth.api.sendPhoneNumberOTP({
@@ -23,5 +26,5 @@ export async function sendOTP({ authJwt, body: { token } }: sendOTPOptions) {
     },
   });
 
-  return code;
+  return "Code sent";
 }
