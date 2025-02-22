@@ -1,6 +1,7 @@
 import { error, t } from "elysia";
 import { auth } from "../../auth";
 import type { JwtType } from "../types/jwt";
+import type { SetType } from "../types/set";
 
 export const sendOTPBody = t.Object({
   token: t.String(),
@@ -9,22 +10,31 @@ export const sendOTPBody = t.Object({
 type sendOTPOptions = {
   body: typeof sendOTPBody.static;
   jwtAuth: JwtType;
+  set: SetType;
+  sendPhoneNumberOTP: ({
+    body: { phoneNumber },
+  }: {
+    body: { phoneNumber: string };
+  }) => Promise<{ code: string }>;
 };
 
-export async function sendOTP({ jwtAuth, body: { token } }: sendOTPOptions) {
+export async function sendOTP({
+  jwtAuth,
+  set,
+  body: { token },
+  sendPhoneNumberOTP,
+}: sendOTPOptions) {
   const verifiedToken = await jwtAuth.verify(token);
   if (!verifiedToken) {
-    throw error("Unauthorized");
+    set.status = "Unauthorized";
+    throw error(set.status);
   }
   if (!verifiedToken.phoneNumber || !verifiedToken.code) {
-    throw error("No Content");
+    set.status = "Bad Request";
+    throw error(set.status);
   }
   const { phoneNumber } = verifiedToken as { phoneNumber: string };
-  const code = await auth.api.sendPhoneNumberOTP({
-    body: {
-      phoneNumber,
-    },
-  });
+  const code = await sendPhoneNumberOTP({ body: { phoneNumber } });
 
   return "Code sent";
 }

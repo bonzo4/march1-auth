@@ -2,21 +2,41 @@ import { error, t } from "elysia";
 import { auth } from "../../auth";
 import type { JwtType } from "../types/jwt";
 import type { SetType } from "../types/set";
+import type { UserWithPhoneNumber } from "better-auth/plugins";
 
 export const verifyOTPBody = t.Object({
   token: t.String(),
 });
 
+type VerifyPhoneNumberRes =
+  | {
+      status: boolean;
+      token: string;
+      user: UserWithPhoneNumber;
+    }
+  | {
+      status: boolean;
+      token: null;
+      user: UserWithPhoneNumber;
+    }
+  | null;
+
 type VerifyOTPOptions = {
   body: typeof verifyOTPBody.static;
   set: SetType;
   jwtAuth: JwtType;
+  verifyPhoneNumber: ({
+    body: { phoneNumber, code },
+  }: {
+    body: { phoneNumber: string; code: string };
+  }) => Promise<VerifyPhoneNumberRes>;
 };
 
 export async function verifyOTP({
   jwtAuth,
   set,
   body: { token },
+  verifyPhoneNumber,
 }: VerifyOTPOptions) {
   const verifiedToken = await jwtAuth.verify(token);
   if (!verifiedToken) {
@@ -32,7 +52,7 @@ export async function verifyOTP({
     code: string;
   };
 
-  const verifiedRes = await auth.api.verifyPhoneNumber({
+  const verifiedRes = await verifyPhoneNumber({
     body: {
       phoneNumber,
       code,
