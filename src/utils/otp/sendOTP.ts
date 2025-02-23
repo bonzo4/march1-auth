@@ -29,7 +29,7 @@ export async function sendOTP({
     set.status = "Unauthorized";
     throw error(set.status);
   }
-  if (!verifiedToken.phoneNumber || !verifiedToken.code) {
+  if (!verifiedToken.phoneNumber) {
     set.status = "Bad Request";
     throw error(set.status);
   }
