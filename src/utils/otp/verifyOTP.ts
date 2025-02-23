@@ -43,9 +43,13 @@ export async function verifyOTP({
     set.status = "Unauthorized";
     throw error(set.status);
   }
-  if (!verifiedToken.phoneNumber || !verifiedToken.code) {
+  if (!verifiedToken.phoneNumber) {
     set.status = "Bad Request";
-    throw error(set.status);
+    throw error(set.status, "Missing Phone Number");
+  }
+  if (!verifiedToken.code) {
+    set.status = "Bad Request";
+    throw error(set.status, "Missing Code");
   }
   const { phoneNumber, code } = verifiedToken as {
     phoneNumber: string;

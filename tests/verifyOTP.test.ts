@@ -69,14 +69,25 @@ describe("Verify OTP", () => {
     }
   });
 
-  it("Should throw bad request", async () => {
+  it("Should throw missing phone number", async () => {
     try {
       const body = {
-        token: await jwtAuth.sign({}),
+        token: await jwtAuth.sign({ code: "1" }),
       };
       await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
     } catch (e: any) {
-      expect(e.response).toBe("Bad Request");
+      expect(e.response).toBe("Missing Phone Number");
+    }
+  });
+
+  it("Should throw missing code", async () => {
+    try {
+      const body = {
+        token: await jwtAuth.sign({ phoneNumber: "1" }),
+      };
+      await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
+    } catch (e: any) {
+      expect(e.response).toBe("Missing Code");
     }
   });
 

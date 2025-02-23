@@ -3,7 +3,6 @@ import { sendOTP } from "../src/utils/otp/sendOTP";
 import jwt from "@elysiajs/jwt";
 import { SetType } from "../src/utils/types/set";
 import { JwtType } from "../src/utils/types/jwt";
-import { ElysiaCustomStatusResponse } from "elysia/error";
 
 const jwtAuth: JwtType = jwt({
   name: "jwtAuth",
@@ -22,7 +21,7 @@ const sendPhoneNumberOTP = async ({
 
 describe("Send OTP", () => {
   it("Should send OTP for a valid token", async () => {
-    const body = { token: await jwtAuth.sign({ phoneNumber: "1" }) };
+    const body = { token: await jwtAuth.sign({ phoneNumber: "+12345678910" }) };
     const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
     expect(res).toBe("Code sent");
   });
@@ -36,14 +35,36 @@ describe("Send OTP", () => {
     }
   });
 
-  it("Should throw bad request", async () => {
+  it("Should throw missing phone number", async () => {
     try {
       const body = {
         token: await jwtAuth.sign({}),
       };
       const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
     } catch (e: any) {
-      expect(e.response).toBe("Bad Request");
+      expect(e.response).toBe("Missing Phone Number");
+    }
+  });
+
+  it("Should throw invalid phone number", async () => {
+    try {
+      const body = {
+        token: await jwtAuth.sign({ phoneNumber: "2345678910" }),
+      };
+      const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
+    } catch (e: any) {
+      expect(e.response).toBe("Invalid Phone Number");
+    }
+  });
+
+  it("Should throw US phone numbers only", async () => {
+    try {
+      const body = {
+        token: await jwtAuth.sign({ phoneNumber: "+12505550199" }),
+      };
+      const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
+    } catch (e: any) {
+      expect(e.response).toBe("US Phone Numbers Only");
     }
   });
 });
