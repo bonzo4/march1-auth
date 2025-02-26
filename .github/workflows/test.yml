@@ -3,6 +3,15 @@ on:
     types: [opened, reopened]
 name: test
 jobs:
+  create-envfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_AUTH_JWT_SECRET: "123456abcdef"
+          # envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          file_name: .env
   run-test:
     name: my-job
     runs-on: ubuntu-latest
