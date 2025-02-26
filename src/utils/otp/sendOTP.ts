@@ -38,7 +38,7 @@ export async function sendOTP({
   const validatedPhoneNumber = validatePhoneNumber(phoneNumber);
   if (!validatedPhoneNumber) {
     set.status = "Bad Request";
-    throw error(set.status, "Invalid phone number");
+    throw error(set.status, "Invalid Phone Number");
   }
   await sendPhoneNumberOTP({ body: { phoneNumber } });
 
