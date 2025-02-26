@@ -27,7 +27,7 @@ export const auth = betterAuth({
         getTempEmail,
         getTempName,
       },
-      phoneNumberValidator: validatePhoneNumber,
+      phoneNumberValidator: (phoneNumber) => validatePhoneNumber(phoneNumber),
     }),
   ],
 });
