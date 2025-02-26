@@ -40,7 +40,7 @@ export async function sendOTP({
     set.status = "Bad Request";
     throw error(set.status, validatedPhoneNumber.message);
   }
-  const code = await sendPhoneNumberOTP({ body: { phoneNumber } });
+  await sendPhoneNumberOTP({ body: { phoneNumber } });
 
   return "Code sent";
 }
