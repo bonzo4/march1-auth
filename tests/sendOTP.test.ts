@@ -57,14 +57,14 @@ describe("Send OTP", () => {
     }
   });
 
-  it("Should throw US phone numbers only", async () => {
+  it("Should throw on non US number", async () => {
     try {
       const body = {
         token: await jwtAuth.sign({ phoneNumber: "+12505550199" }),
       };
       const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
     } catch (e: any) {
-      expect(e.response).toBe("US Phone Numbers Only");
+      expect(e.response).toBe("Invalid Phone Number");
     }
   });
 });
