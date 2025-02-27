@@ -3,10 +3,13 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 import { phoneNumber } from "better-auth/plugins";
 import { twilioSendOTP } from "./utils/otp/twilio";
-import { users, sessions, accounts, verifications } from "march1-db";
 import { getTempEmail } from "./utils/getTempEmail";
 import { getTempName } from "./utils/getTempName";
 import { validatePhoneNumber } from "./utils/validatePhoneNumber";
+import { accounts } from "./db/schema/accounts";
+import { sessions } from "./db/schema/sessions";
+import { users } from "./db/schema/users";
+import { verifications } from "./db/schema/verifications";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
