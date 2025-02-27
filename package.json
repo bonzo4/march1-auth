@@ -16,14 +16,15 @@
     "@elysiajs/jwt": "^1.2.0",
     "awesome-phonenumber": "^7.3.0",
     "better-auth": "^1.1.18",
-    "drizzle-orm": "^0.39.3",
+    "drizzle-orm": "^0.40.0",
     "elysia": "^1.2.12",
-    "march1-db": "^1.0.8",
     "twilio": "^5.4.4"
   },
   "devDependencies": {
     "@types/bun": "^1.2.2",
+    "@types/pg": "^8.11.11",
     "bun-types": "latest",
+    "drizzle-kit": "^0.30.5",
     "rimraf": "^6.0.1"
   },
   "files": [
