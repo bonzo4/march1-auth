@@ -4,6 +4,7 @@ import { sendOTP, sendOTPBody } from "./utils/otp/sendOTP";
 import { verifyOTP, verifyOTPBody } from "./utils/otp/verifyOTP";
 import { onBeforeHandle } from "./utils/onBeforeHandle";
 import { auth } from "./auth";
+import { treaty } from "@elysiajs/eden";
 
 export const authApi = new Elysia()
   .use(
@@ -16,10 +17,6 @@ export const authApi = new Elysia()
     return error;
   })
   .onBeforeHandle(onBeforeHandle)
-  .get("/", () => {
-    return "Test";
-  })
-
   .post(
     "/sendOTP",
     ({ jwtAuth, body, set }) =>
@@ -47,4 +44,7 @@ export const authApi = new Elysia()
   .listen(process.env.PORT!);
 
 type AuthApi = typeof authApi;
-export type { AuthApi };
+const authTreaty = treaty<AuthApi>("");
+type SendOTPRoute = (typeof authTreaty)["sendOTP"];
+type VerifyOTPRoute = (typeof authTreaty)["verifyOTP"];
+export type { AuthApi, SendOTPRoute, VerifyOTPRoute };
