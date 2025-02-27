@@ -13,9 +13,6 @@ export const authApi = new Elysia()
       secret: process.env.AUTH_JWT_SECRET!,
     })
   )
-  .onError(({ code, set, error }) => {
-    return error;
-  })
   .onBeforeHandle(onBeforeHandle)
   .post(
     "/sendOTP",
@@ -45,6 +42,6 @@ export const authApi = new Elysia()
 
 type AuthApi = typeof authApi;
 const authTreaty = treaty<AuthApi>("");
-type SendOTPRoute = (typeof authTreaty)["sendOTP"];
-type VerifyOTPRoute = (typeof authTreaty)["verifyOTP"];
+type SendOTPRoute = (typeof authTreaty)["sendOTP"]["post"];
+type VerifyOTPRoute = (typeof authTreaty)["verifyOTP"]["post"];
 export type { AuthApi, SendOTPRoute, VerifyOTPRoute };
