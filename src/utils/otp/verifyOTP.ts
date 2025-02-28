@@ -41,15 +41,15 @@ export async function verifyOTP({
   const verifiedToken = await jwtAuth.verify(token);
   if (!verifiedToken) {
     set.status = "Unauthorized";
-    throw error(set.status);
+    return error(set.status);
   }
   if (!verifiedToken.phoneNumber) {
     set.status = "Bad Request";
-    throw error(set.status, "Missing Phone Number");
+    return error(set.status, "Missing Phone Number");
   }
   if (!verifiedToken.code) {
     set.status = "Bad Request";
-    throw error(set.status, "Missing Code");
+    return error(set.status, "Missing Code");
   }
   const { phoneNumber, code } = verifiedToken as {
     phoneNumber: string;
@@ -65,7 +65,7 @@ export async function verifyOTP({
 
   if (!verifiedRes || !verifiedRes.status || !verifiedRes.token) {
     set.status = "Bad Request";
-    throw error(set.status);
+    return error(set.status, "Verification Failed");
   }
 
   return verifiedRes;

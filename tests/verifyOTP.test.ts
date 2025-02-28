@@ -3,6 +3,7 @@ import { JwtType } from "../src/utils/types/jwt";
 import { SetType } from "../src/utils/types/set";
 import { describe, expect, it } from "bun:test";
 import { verifyOTP } from "../src/utils/otp/verifyOTP";
+import { error } from "elysia";
 
 const jwtAuth: JwtType = jwt({
   name: "jwtAuth",
@@ -61,49 +62,37 @@ describe("Verify OTP", () => {
   });
 
   it("Should throw unauthorized", async () => {
-    try {
-      const body = { token: "1" };
-      await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
-    } catch (e: any) {
-      expect(e.response).toBe("Unauthorized");
-    }
+    const body = { token: "1" };
+    const res = await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
+    expect(res).toEqual(error("Unauthorized", "Unauthorized"));
   });
 
   it("Should throw missing phone number", async () => {
-    try {
-      const body = {
-        token: await jwtAuth.sign({ code: "1" }),
-      };
-      await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
-    } catch (e: any) {
-      expect(e.response).toBe("Missing Phone Number");
-    }
+    const body = {
+      token: await jwtAuth.sign({ code: "1" }),
+    };
+    const res = await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
+    expect(res).toEqual(error("Bad Request", "Missing Phone Number"));
   });
 
   it("Should throw missing code", async () => {
-    try {
-      const body = {
-        token: await jwtAuth.sign({ phoneNumber: "1" }),
-      };
-      await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
-    } catch (e: any) {
-      expect(e.response).toBe("Missing Code");
-    }
+    const body = {
+      token: await jwtAuth.sign({ phoneNumber: "1" }),
+    };
+    const res = await verifyOTP({ jwtAuth, set, body, verifyPhoneNumber });
+    expect(res).toEqual(error("Bad Request", "Missing Code"));
   });
 
   it("Should catch a failed request", async () => {
-    try {
-      const body = {
-        token: await jwtAuth.sign({ phoneNumber: "1", code: "1" }),
-      };
-      const res = await verifyOTP({
-        jwtAuth,
-        set,
-        body,
-        verifyPhoneNumber: verifyPhoneNumberFail,
-      });
-    } catch (e: any) {
-      expect(e.response).toBe("Bad Request");
-    }
+    const body = {
+      token: await jwtAuth.sign({ phoneNumber: "1", code: "1" }),
+    };
+    const res = await verifyOTP({
+      jwtAuth,
+      set,
+      body,
+      verifyPhoneNumber: verifyPhoneNumberFail,
+    });
+    expect(res).toEqual(error("Bad Request", "Verification Failed"));
   });
 });

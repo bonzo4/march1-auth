@@ -1,8 +1,9 @@
-import { describe, expect, test, mock, it } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { sendOTP } from "../src/utils/otp/sendOTP";
 import jwt from "@elysiajs/jwt";
 import { SetType } from "../src/utils/types/set";
 import { JwtType } from "../src/utils/types/jwt";
+import { error } from "elysia";
 
 const jwtAuth: JwtType = jwt({
   name: "jwtAuth",
@@ -27,44 +28,33 @@ describe("Send OTP", () => {
   });
 
   it("Should throw unauthorized", async () => {
-    try {
-      const body = { token: "1" };
-      const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
-    } catch (e: any) {
-      expect(e.response).toBe("Unauthorized");
-    }
+    const body = { token: "1" };
+    const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
+    error("Unauthorized");
+    expect(res).toEqual(error("Unauthorized", "Unauthorized"));
   });
 
   it("Should throw missing phone number", async () => {
-    try {
-      const body = {
-        token: await jwtAuth.sign({}),
-      };
-      const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
-    } catch (e: any) {
-      expect(e.response).toBe("Missing Phone Number");
-    }
+    const body = {
+      token: await jwtAuth.sign({}),
+    };
+    const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
+    expect(res).toEqual(error("Bad Request", "Missing Phone Number"));
   });
 
   it("Should throw invalid phone number", async () => {
-    try {
-      const body = {
-        token: await jwtAuth.sign({ phoneNumber: "2345678910" }),
-      };
-      const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
-    } catch (e: any) {
-      expect(e.response).toBe("Invalid Phone Number");
-    }
+    const body = {
+      token: await jwtAuth.sign({ phoneNumber: "2345678910" }),
+    };
+    const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
+    expect(res).toEqual(error("Bad Request", "Invalid Phone Number"));
   });
 
   it("Should throw invalid on non-US phone numbers", async () => {
-    try {
-      const body = {
-        token: await jwtAuth.sign({ phoneNumber: "+12505550199" }),
-      };
-      const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
-    } catch (e: any) {
-      expect(e.response).toBe("Invalid Phone Number");
-    }
+    const body = {
+      token: await jwtAuth.sign({ phoneNumber: "+12505550199" }),
+    };
+    const res = await sendOTP({ jwtAuth, set, body, sendPhoneNumberOTP });
+    expect(res).toEqual(error("Bad Request", "Invalid Phone Number"));
   });
 });
