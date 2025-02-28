@@ -28,17 +28,17 @@ export async function sendOTP({
   const verifiedToken = await jwtAuth.verify(token);
   if (!verifiedToken) {
     set.status = "Unauthorized";
-    throw error(set.status);
+    return error(set.status);
   }
   if (!verifiedToken.phoneNumber) {
     set.status = "Bad Request";
-    throw error(set.status, "Missing Phone Number");
+    return error(set.status, "Missing Phone Number");
   }
   const { phoneNumber } = verifiedToken as { phoneNumber: string };
   const validatedPhoneNumber = validatePhoneNumber(phoneNumber);
   if (!validatedPhoneNumber) {
     set.status = "Bad Request";
-    throw error(set.status, "Invalid Phone Number");
+    return error(set.status, "Invalid Phone Number");
   }
   await sendPhoneNumberOTP({ body: { phoneNumber } });
 
