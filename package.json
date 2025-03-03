@@ -1,6 +1,6 @@
 {
   "name": "march1-auth",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -29,8 +29,8 @@
     "rimraf": "^6.0.1"
   },
   "files": [
-    "dist/index.js",
     "dist/index.d.ts",
+    "dist/db/index.js",
     "dist/db/schema/**/*.d.ts"
   ]
 }

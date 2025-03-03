@@ -5,6 +5,7 @@ import { verifyOTP, verifyOTPBody } from "./utils/otp/verifyOTP";
 import { onBeforeHandle } from "./utils/onBeforeHandle";
 import { auth } from "./auth";
 import { treaty } from "@elysiajs/eden";
+import type { users } from "./db/schema/users";
 
 export const authApi = new Elysia()
   .use(
@@ -44,4 +45,5 @@ type AuthApi = typeof authApi;
 const authTreaty = treaty<AuthApi>("");
 type SendOTPRoute = (typeof authTreaty)["sendOTP"]["post"];
 type VerifyOTPRoute = (typeof authTreaty)["verifyOTP"]["post"];
+export { users, sessions, verifications, accounts } from "./db";
 export type { AuthApi, SendOTPRoute, VerifyOTPRoute };
