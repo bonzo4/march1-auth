@@ -3,7 +3,7 @@ networks:
     external: true
 
 volumes:
-  postgres_data:
+  march1_auth_data:
 
 services:
   app:
@@ -30,6 +30,6 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - march1_auth_data:/var/lib/postgresql/data
     networks:
       - march1_network
