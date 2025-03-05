@@ -12,11 +12,11 @@ export async function onBeforeHandle({ request, set, jwtAuth }: Options) {
   const authorization = request.headers.get("authorization");
   if (!authorization) {
     set.status = "Unauthorized";
-    throw error("Unauthorized");
+    return error("Unauthorized");
   }
   const authorized = await jwtAuth.verify(authorization);
   if (!authorized) {
     set.status = "Unauthorized";
-    throw error("Unauthorized");
+    return error("Unauthorized");
   }
 }
